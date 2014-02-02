@@ -1,0 +1,25 @@
+/* app css stylesheet */
+
+body {
+    background-color: lightpink;
+}
+
+div {
+    margin: 3rem;
+    border: 0.2rem solid black;
+    border-radius: 1rem;
+    padding: 2rem;
+    background-color: white;
+}
+
+label {
+    display: block;
+    margin: 0.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+}
+
+label.error {
+    border: 1px solid red;
+}

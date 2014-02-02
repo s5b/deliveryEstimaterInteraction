@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Delivery Estimator</title>
+  <link rel="stylesheet" href="css/app.css"/>
+</head>
+<body>
+
+  <div id="cmsContainer">
+
+      <div id="deForm" data-ng-app="deInput">
+          <h2>Enter Your Delivery Details</h2>
+          <form name="deForm" data-ng-controller="dataCapture">
+              <label data-ng-class="inputValidation(deForm.fromPostcode.$error.required)">From postcode: <select class="postcode" name="fromPostcode" data-ng-model="parameters.fromPostcode" data-ng-required="true" data-ng-options="pc.postcode as pc.label for pc in postcodes">
+                  <option value="" selected>Select a postcode</option>
+              </select></label>
+              <label data-ng-class="inputValidation(deForm.toPostcode.$error.required)">To postcode: <select class="postcode" name="toPostcode" data-ng-model="parameters.toPostcode"   data-ng-required="true" data-ng-options="pc.postcode as pc.label for pc in postcodes">
+                  <option value="" selected>Select a postcode</option>
+              </select></label>
+              <label>Sent: <input class="sent_date" data-ng-model="parameters.when"/></label>
+              <label><input class="item_type" type="radio" data-ng-model="parameters.itemType" data-ng-value="itemTypes.LETTER"/> Letter</label>
+              <label><input class="item_type" type="radio" data-ng-model="parameters.itemType" data-ng-value="itemTypes.PARCEL"/> Parcel</label>
+              <button data-ng-click="estimate(deForm.$valid)">Estimate</button>
+          </form>
+      </div>
+
+      <div id="deResults">
+        <h2>Results</h2>
+      </div>
+
+  </div>
+
+  <script src="lib/moment/moment.min.js"></script>
+  <script src="lib/lodash/lodash.min.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="js/deServices.js"></script>
+  <script src="js/deInputControllers.js"></script>
+  <script src="js/deInput.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "delivery-estimater-interaction",
+  "description": "An experiment and example of using the URL fragment to propagate state. Based on the starter project for AngularJS",
+  "repository": "https://github.com/s5b/deliveryEstimaterInteraction.git",
+  "devDependencies": {
+    "phantomjs" : "~1.9",
+    "karma" : "~0.10",
+    "karma-junit-reporter" : "~0.1",
+    "karma-jasmine" : "~0.1",
+    "karma-ng-scenario" : "~0.1"
+  }
+}
