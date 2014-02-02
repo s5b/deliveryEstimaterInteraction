@@ -5,7 +5,7 @@ body {
 }
 
 div {
-    margin: 3rem;
+    margin: 1rem;
     border: 0.2rem solid black;
     border-radius: 1rem;
     padding: 2rem;
@@ -22,4 +22,12 @@ label {
 
 label.error {
     border: 1px solid red;
+}
+
+div#deOutput {
+    display: none;
+}
+
+div#deOutput.show {
+    display: block;
 }

@@ -21,7 +21,7 @@ angular.module('de.services', []).
         var defaultModel = function () {
             return {
                 fromPostcode: '',
-                    toPostcode: '',
+                toPostcode: '',
                 when: new Date(),
                 itemType: itemTypes.LETTER
             };
@@ -49,6 +49,11 @@ angular.module('de.services', []).
         var outputConversionAsIs = function (output) { return output; };
         var outputConversionISO8601Sort = function (output) { return moment(output).format('YYYY-MM-DD'); };
 
+        /* Determine whether the model has a complete set of values. */
+        var validParameters = function (parameters) {
+            return parameters.fromPostcode.length > 0 && parameters.toPostcode.length > 0 && parameters.when !== undefined && parameters.itemType !== undefined;
+        };
+
         var urlParameterSeparator = '/';
         /* A declaration of the model parameters to be stored into and source from the URL.
            The key defines the parameter name in the model.
@@ -63,7 +68,7 @@ angular.module('de.services', []).
             'when': { token: 'deWhen', pattern: '\\d{4}-\\d{2}-\\d{2}', inputConversion: validateConvertAsISO8601Short, outputConversion: outputConversionISO8601Sort },
             'itemType': { token: 'deItemType', pattern: itemTypesPattern, inputConversion: validateConvertAsIs, outputConversion: outputConversionAsIs }
         };
-        /* How to construct the parameter regular expression for use by the parser. */
+        /* Construct the parameter regular expression for use by the parser. */
         var parameterMatcher = function (token, pattern) {
             return urlParameterSeparator + token + urlParameterSeparator + '(' + pattern + ')\\b';
         };
@@ -71,6 +76,10 @@ angular.module('de.services', []).
         /* The parser for the hash fragment in the URL. */
         var parseHashFragment = function (hashFragment) {
             var match;
+            var modelParameters = _.reduce(urlFragmentComponents, function (allParameters, metadata, parameter) {
+                allParameters.push(parameter);
+                return allParameters;
+            }, []);
             /* Initialise the model - because things have changed in the URL; previously defined parts may be missing now. */
             de.parameters = defaultModel();
             /* Iterate over the declaration, processing each of the expected parameters. */
@@ -79,24 +88,38 @@ angular.module('de.services', []).
                 /* If a match is found then convert the value (if possible), otherwise the default value remains set. */
                 if (match) {
                     de.parameters[parameter] = metadata.inputConversion(match[1]);
+                    _.remove(modelParameters, function (targetParameter) { return targetParameter === parameter; });
                 }
             });
+            de.modelComplete = modelParameters.length === 0 && validParameters(de.parameters);
         };
 
         /* TODO: Add a parameter to setLocationFragment that wne set will change the .html part of the request - that is, go to another page. */
-        /* The URL fragment builder, based on the values in the model. This method is intended to be the onclick target for the input form. */
+        /* FIXME: This implementation assumes that it is the only one that will change the hash fragment - beware!
+        /* The URL fragment builder, based on the values in the model. This method is intended to be the onclick target for the button on the input form. */
         var setLocationFragment = function () {
-            $location.path(_.reduce(urlFragmentComponents, function (urlFragment, metadata, parameter) {
+            var hashFragment = _.reduce(urlFragmentComponents, function (urlFragment, metadata, parameter) {
                 urlFragment += urlParameterSeparator + metadata.token + urlParameterSeparator + metadata.outputConversion(de.parameters[parameter]);
                 return urlFragment;
-            }, ''));
+            }, '');
+            $location.path(hashFragment);
         };
 
+        /* Force a reset on the model complete flag - used from UI when the form has errors on submit. */
+        var resetModelComplete = function () {
+            de.modelComplete = false;
+        };
+
+        /* Exposed methods and fields. */
         de.parameters = defaultModel();
         de.itemTypes = itemTypes;
         de.postcodes = postcodes;
+
         de.parseHashFragment = parseHashFragment;
         de.setLocationFragment = setLocationFragment;
+
+        de.modelComplete = false;
+        de.resetModelComplete = resetModelComplete;
 
         /* Watch the URL fragment for changes and call the parser when it does change. */
         de.$watch(function () { return $location.path(); }, function () { parseHashFragment($location.path()); });

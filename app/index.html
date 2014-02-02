@@ -7,9 +7,9 @@
 </head>
 <body>
 
-  <div id="cmsContainer">
+  <div id="cmsContainer" data-ng-app="deliveryEstimator">
 
-      <div id="deForm" data-ng-app="deInput">
+      <div id="deInput">
           <h2>Enter Your Delivery Details</h2>
           <form name="deForm" data-ng-controller="dataCapture">
               <label data-ng-class="inputValidation(deForm.fromPostcode.$error.required)">From postcode: <select class="postcode" name="fromPostcode" data-ng-model="parameters.fromPostcode" data-ng-required="true" data-ng-options="pc.postcode as pc.label for pc in postcodes">
@@ -25,7 +25,7 @@
           </form>
       </div>
 
-      <div id="deResults">
+      <div id="deOutput" data-ng-controller="resultsDisplay" data-ng-class="showResults">
         <h2>Results</h2>
       </div>
 
@@ -36,6 +36,7 @@
   <script src="lib/angular/angular.js"></script>
   <script src="js/deServices.js"></script>
   <script src="js/deInputControllers.js"></script>
-  <script src="js/deInput.js"></script>
+  <script src="js/deOutputControllers.js"></script>
+  <script src="js/deApp.js"></script>
 </body>
 </html>

@@ -17,10 +17,9 @@ angular.module('deInput.controllers', [
 
         $scope.estimate = function (isValid) {
             if (isValid) {
-                console.log('-- Attempt estimate --');
                 de.setLocationFragment();
             } else {
-                console.log('XXXXXX Fix the input XXXXXX');
+                de.resetModelComplete();
             }
         }
   }]);
