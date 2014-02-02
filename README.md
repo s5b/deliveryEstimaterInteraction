@@ -35,7 +35,11 @@ The tests are yet to be updated from the AngularJS seed.
 Acknowledgements
 ----------------
 
-This example is based on the AngularJS seed. Some of the files from the AngularJS seed that are not needed for this example have been removed. The included README for AngularJS (README.angular-seed.md) has not been adjusted to reflect these changes. The AngularJS README is included to provide some additional context for the implementation that is not covered here.
+This example is based on the [AngularJS seed][1]. Some of the files from the AngularJS seed that are not needed for this example have been removed. The included README for AngularJS (README.angular-seed.md) has not been adjusted to reflect these changes. The AngularJS README is included to provide some additional context for the implementation that is not covered here in this document.
+
+The example is also based on a [technique][3] I saw demonstrated by Glen Maddern for communicating state changes between components using $scope. The approach was shown by Glen is his talk at [NgMelb][4].
 
 [1]: https://github.com/angular/angular-seed
 [2]: http://nodejs.org/
+[3]: https://github.com/geelen/ngmelb-controller-comms
+[4]: https://twitter.com/ngMelb
